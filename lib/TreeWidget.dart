@@ -1,10 +1,12 @@
-import 'dart:math';
+// import 'dart:math';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+// import 'package:flutter/src/widgets/framework.dart';
+// import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:parkmyvehicle/HomeScreen/index.dart';
+import 'Widgets/index.dart';
 
 class TreeWidget extends StatefulWidget {
   const TreeWidget({super.key});
@@ -36,10 +38,12 @@ class _TreeWidgetState extends State<TreeWidget> {
       });
       // return true;
     } else {
+      Toasts.failToast("No InternetConnection");
       setState(() {
         _isLoading = false;
         _isConnectivty = false;
       });
+
       // return true;
     }
   }
@@ -71,7 +75,7 @@ class _TreeWidgetState extends State<TreeWidget> {
                             onPressed: () {
                               checkInternetConnectivity();
                             },
-                            icon: const Icon(Icons.refresh))
+                            icon: const Icon(Icons.refresh)),
                       ],
                     ),
                   ));

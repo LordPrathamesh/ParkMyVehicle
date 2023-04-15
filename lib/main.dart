@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Park My Vehicle',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(),
       home: const TreeWidget(),
     );
