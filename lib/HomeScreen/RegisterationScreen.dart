@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:parkmyvehicle/Widgets/index.dart';
+import '../Utils/index.dart';
 
 class RegisterationScreen extends StatefulWidget {
   const RegisterationScreen({super.key});
@@ -33,8 +34,6 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
     });
     return Future.value(true);
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -87,10 +86,10 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                                           validator: (value) {
                                             if (value != null &&
                                                 value.isEmpty) {
-                                              return "Please enter a digit";
+                                              return Messages.optValidation1;
                                             } else if (value != null &&
                                                 value.length > 1) {
-                                              return "Please enter only one digit";
+                                              return Messages.optValidation2;
                                             }
                                             return null;
                                           },
@@ -155,7 +154,7 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                                             });
                                           },
                                           child: const Text(
-                                            "Change EmailId",
+                                            "Change Email",
                                             textAlign: TextAlign.center,
                                           ),
                                         ),
@@ -196,11 +195,11 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                                     ),
                                     validator: (value) {
                                       if (value!.isEmpty) {
-                                        return 'Email is required';
+                                        return Messages.emailValidation1;
                                       } else if (!RegExp(
                                               r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
                                           .hasMatch(value)) {
-                                        return 'Please enter a valid email address';
+                                        return Messages.emailValidation2;
                                       }
                                       return null;
                                     },

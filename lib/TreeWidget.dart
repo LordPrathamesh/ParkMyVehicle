@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:parkmyvehicle/HomeScreen/index.dart';
 import 'Widgets/index.dart';
+import 'Utils/index.dart';
 
 class TreeWidget extends StatefulWidget {
   const TreeWidget({super.key});
@@ -38,7 +39,7 @@ class _TreeWidgetState extends State<TreeWidget> {
       });
       // return true;
     } else {
-      Toasts.failToast("No InternetConnection");
+      Toasts.failToast(Messages.noConnectivity);
       setState(() {
         _isLoading = false;
         _isConnectivty = false;
