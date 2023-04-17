@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get_it/get_it.dart';
 import 'package:parkmyvehicle/Widgets/index.dart';
 import '../Utils/index.dart';
+import '../Services/index.dart';
 
 class RegisterationScreen extends StatefulWidget {
   const RegisterationScreen({super.key});
@@ -13,6 +15,11 @@ class RegisterationScreen extends StatefulWidget {
 }
 
 class _RegisterationScreenState extends State<RegisterationScreen> {
+  final RegistrationService _registrationService;
+  // RegistrationService() : baseService = BaseService();
+  _RegisterationScreenState()
+      : _registrationService = RegistrationService(); //dependency Injection
+
   final _emailController = TextEditingController();
   final _otpControllers = List.generate(4, (i) => TextEditingController());
   final _formKey = GlobalKey<FormState>();
@@ -29,6 +36,9 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
       _isChangeEmail = true;
     });
     await Future.delayed(const Duration(seconds: 5));
+    // var resp = await _registrationService.fetchLoginData();
+    // Toasts.successToast(resp["title"].toString());
+
     setState(() {
       _isSent = false;
     });
@@ -146,7 +156,7 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                                             ),
                                             Expanded(
                                               child: ElevatedButton(
-                                                onPressed: () {
+                                                onPressed: () async {
                                                   if (_formKey.currentState!
                                                       .validate()) {
                                                     String otp = _otpControllers
@@ -154,6 +164,12 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                                                             controller.text)
                                                         .join();
                                                     // TODO: Validate the OTP against a server or other source.
+                                                    var resp =
+                                                        await _registrationService
+                                                            .fetchLoginData();
+                                                    Toasts.successToast(
+                                                        resp["title"]
+                                                            .toString());
                                                   }
                                                 },
                                                 child: const Text(
@@ -270,7 +286,8 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                           "About Us:",
                           style: TextStyle(
                               fontStyle: FontStyle.italic,
-                              fontWeight: FontWeight.bold,color: Colors.blueAccent),
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blueAccent),
                         )
                       ],
                     ),

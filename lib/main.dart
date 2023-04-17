@@ -1,10 +1,25 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'Screens/index.dart';
+import 'package:get_it/get_it.dart';
+// import 'Screens/index.dart';
 import 'TreeWidget.dart';
+import 'Services/index.dart';
 
+GetIt locator = GetIt.instance;
 void main() {
+  // setupLocator();
   runApp(const MyApp());
 }
+
+// void setupLocator(){
+//   debugPrint("Registering Dependencies");
+//   locator.registerSingleton<RegistrationService>(RegistrationService());
+//   // locator.registerFactory<RegistrationService>(() => RegistrationService(),instanceName: "RegistrationService");
+//   locator.registerSingleton<BaseService>(BaseService());
+//   // locator.registerFactory<BaseService>(() => BaseService(),instanceName: "baseService");
+
+//   //RegistrationService
+// }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
