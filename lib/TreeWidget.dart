@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:flutter/src/widgets/framework.dart';
 // import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:parkmyvehicle/HomeScreen/index.dart';
+import 'package:parkmyvehicle/Screens/index.dart';
 import 'Widgets/index.dart';
 import 'Utils/index.dart';
 
