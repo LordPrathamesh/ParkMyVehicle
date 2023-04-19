@@ -28,6 +28,7 @@ class _TreeWidgetState extends State<TreeWidget> {
 
   Future<void> checkInternetConnectivity() async {
     debugPrint("==Checking Connectivity==");
+    await Future.delayed(const Duration(seconds: 5));
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile ||
         connectivityResult == ConnectivityResult.wifi ||
@@ -44,7 +45,7 @@ class _TreeWidgetState extends State<TreeWidget> {
         _isLoading = false;
         _isConnectivty = false;
       });
-
+    
       // return true;
     }
   }
