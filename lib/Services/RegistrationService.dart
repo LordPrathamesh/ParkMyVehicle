@@ -14,9 +14,9 @@ class RegistrationService {
 
   RegistrationService() : baseService = BaseService(); //dependency Injection
 
-  Future<Map<String, Object>> fetchLoginData() async {
+  Future<Map<String, Object>> fetchLoginData(String emailId) async {
     // BaseService baseService = BaseService();
-    final response = await baseService.dioInterceptor().get(Urls.testURL);
+    final response = await baseService.dioInterceptor().get(Urls.baseURL+Urls.sendEmail+emailId);
     Map<String, Object> resp = response.data;
     debugPrint("Data===>${resp["title"]}");
     return resp;

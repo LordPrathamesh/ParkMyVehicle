@@ -35,8 +35,8 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
       _isSent = true;
       _isChangeEmail = true;
     });
-    await Future.delayed(const Duration(seconds: 5));
-    // var resp = await _registrationService.fetchLoginData();
+    // await Future.delayed(const Duration(seconds: 5));
+    var resp = await _registrationService.fetchLoginData(_emailController.text);
     // Toasts.successToast(resp["title"].toString());
 
     setState(() {
@@ -164,12 +164,12 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                                                             controller.text)
                                                         .join();
                                                     // TODO: Validate the OTP against a server or other source.
-                                                    var resp =
-                                                        await _registrationService
-                                                            .fetchLoginData();
-                                                    Toasts.successToast(
-                                                        resp["title"]
-                                                            .toString());
+                                                    // var resp =
+                                                    //     await _registrationService
+                                                    //         .fetchLoginData();
+                                                    // Toasts.successToast(
+                                                    //     resp["title"]
+                                                    //         .toString());
                                                   }
                                                 },
                                                 child: const Text(
