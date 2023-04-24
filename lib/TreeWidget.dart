@@ -45,9 +45,10 @@ class _TreeWidgetState extends State<TreeWidget> {
         _isLoading = false;
         _isConnectivty = false;
       });
-    
+
       // return true;
     }
+    debugPrint("====Connectivity===${_isConnectivty.toString()}");
   }
 
   @override
@@ -56,7 +57,7 @@ class _TreeWidgetState extends State<TreeWidget> {
         // appBar: AppBar(),
         body: _isLoading
             ? const Center(
-                child: CircularProgressIndicator(),
+                child: ColorfulProgressIndicator( time: 5,),
               )
             : _isConnectivty
                 ? const RegisterationScreen()

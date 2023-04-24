@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:parkmyvehicle/Widgets/index.dart';
 import '../Utils/index.dart';
 import '../Services/index.dart';
+import 'index.dart';
 
 class RegisterationScreen extends StatefulWidget {
   const RegisterationScreen({super.key});
@@ -35,8 +36,8 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
       _isSent = true;
       _isChangeEmail = true;
     });
-    // await Future.delayed(const Duration(seconds: 5));
-    var resp = await _registrationService.fetchLoginData(_emailController.text);
+    await Future.delayed(const Duration(seconds: 5));
+    // var resp = await _registrationService.fetchLoginData(_emailController.text);
     // Toasts.successToast(resp["title"].toString());
 
     setState(() {
@@ -163,6 +164,12 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                                                         .map((controller) =>
                                                             controller.text)
                                                         .join();
+                                                        Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                             const LocationSelectorScreen()),
+                                                    );
                                                     // TODO: Validate the OTP against a server or other source.
                                                     // var resp =
                                                     //     await _registrationService
