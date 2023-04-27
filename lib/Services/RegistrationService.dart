@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:get_it/get_it.dart';
 import 'package:flutter/material.dart';
 import 'index.dart';
@@ -18,7 +20,19 @@ class RegistrationService {
     // BaseService baseService = BaseService();
     final response = await baseService.dioInterceptor().get(Urls.baseURL+Urls.sendEmail+emailId);
     Map<String, Object> resp = response.data;
-    debugPrint("Data===>${resp["title"]}");
+    // debugPrint("Data===>${resp["title"]}");
+    return resp;
+  }
+
+  Future<Map<String, Object>> verifyOTP(String emailId,String otp) async {
+    // BaseService baseService = BaseService();
+
+    final response = await baseService.dioInterceptor().post(Urls.baseURL+Urls.verifyOTP,data: jsonEncode({
+      "email":emailId,
+      "otp":otp
+    }));
+    Map<String, Object> resp = response.data;
+    // debugPrint("Data===>${resp["title"]}");
     return resp;
   }
 }

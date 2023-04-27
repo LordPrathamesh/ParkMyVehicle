@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:parkmyvehicle/Widgets/index.dart';
+import 'package:path_provider/path_provider.dart';
 import '../Utils/index.dart';
 import '../Services/index.dart';
 import 'index.dart';
@@ -26,10 +29,12 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _isSent = false;
   bool _isChangeEmail = false;
+  bool _isVerified = true;
 
   Future<bool> sendOTP() async {
     debugPrint(_emailController.text);
     setState(() {
+      _isVerified = true;
       _otpControllers.forEach((element) {
         element.text = "";
       });
@@ -37,13 +42,42 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
       _isChangeEmail = true;
     });
     await Future.delayed(const Duration(seconds: 5));
-    // var resp = await _registrationService.fetchLoginData(_emailController.text);
+    // var resp = await _registrationService.fetchLoginData(_emailController.text); //commented for UI sim
     // Toasts.successToast(resp["title"].toString());
 
     setState(() {
       _isSent = false;
     });
     return Future.value(true);
+  }
+
+  Future<bool> writeToFile() async {
+    await getApplicationSupportDirectory()
+        .then((value) => {debugPrint(value!.path)});
+    // debugPrint(appDocumentsDirectory.absolute.toString());
+    // debugPrint(appDocumentsDirectory.path.toString());
+    return Future.value(true);
+  }
+
+  Future<bool> verifyOTP(String otp) async {
+    // var resp = await _registrationService.verifyOTP(_emailController.text, otp); //commented for UI sim
+    // debugPrint("verifyOTP ==>>$resp"); //commented for UI sim
+    // if (int.parse(resp["status"].toString()) == 200) { //commented for UI sim
+    _otpControllers.forEach((element) {
+      element.text = "";
+    });
+
+    if (int.parse(otp) == 1234) {
+      setState(() {
+        _isVerified = true;
+      });
+      return Future.value(true);
+    } else {
+      setState(() {
+        _isVerified = false;
+      });
+      return Future.value(false);
+    }
   }
 
   @override
@@ -139,6 +173,49 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                                         const SizedBox(height: 20),
                                         Row(
                                           mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Expanded(
+                                              child: ElevatedButton(
+                                                onPressed: () async {
+                                                  if (_formKey.currentState!
+                                                      .validate()) {
+                                                    String otp = _otpControllers
+                                                        .map((controller) =>
+                                                            controller.text)
+                                                        .join();
+                                                    var resp =
+                                                        await verifyOTP(otp);
+                                                    if (resp) {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                const LocationSelectorScreen()),
+                                                      );
+                                                      // TODO: Validate the OTP against a server or other source.
+                                                      // var resp =
+                                                      //     await _registrationService
+                                                      //         .fetchLoginData();
+                                                      // Toasts.successToast(
+                                                      //     resp["title"]
+                                                      //         .toString());
+                                                    } else {
+                                                      Toasts.failToast(
+                                                          "Incorrect OTP! Please Check Email Id\n ${_emailController.text}");
+                                                    }
+                                                  }
+                                                },
+                                                child: const Text(
+                                                  "Submit",
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
                                               MainAxisAlignment.spaceEvenly,
                                           children: [
                                             Expanded(
@@ -154,36 +231,6 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                                             ),
                                             const SizedBox(
                                               width: 10,
-                                            ),
-                                            Expanded(
-                                              child: ElevatedButton(
-                                                onPressed: () async {
-                                                  if (_formKey.currentState!
-                                                      .validate()) {
-                                                    String otp = _otpControllers
-                                                        .map((controller) =>
-                                                            controller.text)
-                                                        .join();
-                                                        Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                             const LocationSelectorScreen()),
-                                                    );
-                                                    // TODO: Validate the OTP against a server or other source.
-                                                    // var resp =
-                                                    //     await _registrationService
-                                                    //         .fetchLoginData();
-                                                    // Toasts.successToast(
-                                                    //     resp["title"]
-                                                    //         .toString());
-                                                  }
-                                                },
-                                                child: const Text(
-                                                  "Submit",
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ),
                                             ),
                                             const SizedBox(
                                               width: 10,
@@ -203,6 +250,37 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                                             ),
                                           ],
                                         ),
+                                        const Divider(
+                                            color: Colors.white,
+                                            thickness: 1.0),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Expanded(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(10.0),
+                                                child: _isVerified
+                                                    ? const Text("")
+                                                    : Text(
+                                                        "Please Check Email ID : ${_emailController.text}",
+                                                        style: const TextStyle(
+                                                            fontStyle: FontStyle
+                                                                .italic,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    244,
+                                                                    247,
+                                                                    255)),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                              ),
+                                            )
+                                          ],
+                                        )
                                       ]
                                     : [
                                         const SizedBox(
@@ -265,7 +343,7 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                                               // Perform the action after validation
                                               String email =
                                                   _emailController.text;
-
+                                              // await writeToFile();
                                               var data = await sendOTP();
                                               if (data) {
                                                 Toasts.successToast(
