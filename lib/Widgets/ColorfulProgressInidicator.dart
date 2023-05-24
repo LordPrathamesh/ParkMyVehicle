@@ -9,11 +9,13 @@ class ColorfulProgressIndicator extends StatefulWidget {
   const ColorfulProgressIndicator({super.key, required this.time});
 
   @override
-  State<ColorfulProgressIndicator> createState() => _ColorfulProgressIndicatorState();
+  State<ColorfulProgressIndicator> createState() =>
+      _ColorfulProgressIndicatorState();
 }
 
 class _ColorfulProgressIndicatorState extends State<ColorfulProgressIndicator> {
   bool _changeColor = true;
+  bool _changeLogo = true;
   bool _stopProgressIndicator = false;
 
   int _start = 0;
@@ -22,13 +24,22 @@ class _ColorfulProgressIndicatorState extends State<ColorfulProgressIndicator> {
   void initState() {
     super.initState();
     _start = widget.time;
-    looper();
+    // looper();
+    looper2();
   }
 
   void changeColor(bool value) {
     if (mounted) {
       setState(() {
         _changeColor = value;
+      });
+    }
+  }
+
+  void changeIcon(bool value) {
+    if (mounted) {
+      setState(() {
+        _changeLogo = value;
       });
     }
   }
@@ -46,7 +57,27 @@ class _ColorfulProgressIndicatorState extends State<ColorfulProgressIndicator> {
         setState(() {
           counter = counter + 1;
           _start = _start - 1;
-          debugPrint(counter.toString());
+          // debugPrint(counter.toString());
+        });
+      }
+    }
+  }
+
+  void looper2() async {
+    int counter = 1;
+
+    while (_start > 0) {
+      if (counter % 2 == 0) {
+        changeIcon(true);
+      } else {
+        changeIcon(false);
+      }
+      await Future.delayed(const Duration(milliseconds: 200));
+      if (mounted) {
+        setState(() {
+          counter = counter + 1;
+          _start = _start - 1;
+          // debugPrint(counter.toString());
         });
       }
     }
@@ -81,9 +112,9 @@ class _ColorfulProgressIndicatorState extends State<ColorfulProgressIndicator> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Registration"),
-      ),
+      // appBar: AppBar(
+      //   title: const Text("Registration"),
+      // ),
       body: Center(
         child: _stopProgressIndicator
             ? IconButton(
@@ -97,13 +128,22 @@ class _ColorfulProgressIndicatorState extends State<ColorfulProgressIndicator> {
             : Stack(
                 alignment: Alignment.center,
                 children: [
-                  CircularProgressIndicator(
-                    strokeWidth: 4.0,
-                    valueColor: _changeColor
-                        ? const AlwaysStoppedAnimation<Color>(Colors.purple)
-                        : const AlwaysStoppedAnimation<Color>(
-                            Color.fromARGB(255, 244, 146, 54)),
-                  ),
+                  _changeLogo
+                      ? const Icon(Icons.accessible,size: 50,)
+                      : const Icon(Icons.accessible_forward,size: 50,),
+
+                  // SizedBox(
+                  //   height: 100,
+                  //   width: 100,
+                  //   child: CircularProgressIndicator(
+                  //     // backgroundColor: Colors.white,
+                  //     strokeWidth: 4.0,
+                  //     valueColor: _changeColor
+                  //         ? const AlwaysStoppedAnimation<Color>(Colors.purple)
+                  //         : const AlwaysStoppedAnimation<Color>(
+                  //             Color.fromARGB(255, 244, 146, 54)),
+                  //   ),
+                  // ),
                   // Icon(
                   //   Icons.ac_unit,
                   //   size: 50.0,
